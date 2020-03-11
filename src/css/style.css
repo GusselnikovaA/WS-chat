@@ -425,6 +425,7 @@ input::placeholder {
   width: 100%;
   height: 100vh;
   background-color: #0e1621;
+  display: none;
 }
 
 .modal-container {
@@ -507,6 +508,58 @@ input::placeholder {
   font-size: 15px;
   font-weight: 500;
   text-transform: uppercase;
+  background-color: #5288c1;
+  border-radius: 10px;
+}
+
+.global {
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.global-user {
+  -ms-flex-preferred-size: 30%;
+      flex-basis: 30%;
+  background-color: #17212b;
+}
+
+.global-message {
+  -ms-flex-preferred-size: 70%;
+      flex-basis: 70%;
+  background-color: #0e1621;
+}
+
+.message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.message-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: #17212b;
+  padding: 20px;
+}
+
+.message__button {
+  padding: 8px 20px;
+  color: #ffffff;
+  font-size: 14px;
   background-color: #5288c1;
   border-radius: 10px;
 }
