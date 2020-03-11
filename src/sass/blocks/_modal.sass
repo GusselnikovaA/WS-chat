@@ -1,0 +1,55 @@
+.modal 
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100% 
+    height: 100vh
+    background-color: $background-color
+    &-container
+        width: 516px
+        min-height: 562px
+        background-color: $main-color
+        padding: 39px
+        display: flex
+        flex-direction: column 
+        align-items: center
+        justify-content: space-around
+    &__icon 
+        width: 139px
+        height: 139px
+        display: flex
+        justify-content: center
+        align-items: center
+        background-color: $icon-color
+        border-radius: 50%
+    &__title 
+        color: $text-color
+        font-size: 24px
+        font-weight: 500
+    &__subtitle 
+        color: $subtitle-color
+        font-size: 16px
+        max-width: 298px
+        text-align: center
+        line-height: 1.2
+    &-form 
+        display: flex
+        flex-direction: column 
+        align-items: center
+    &__input 
+        padding: 13px 9px
+        width: 298px
+        border-bottom: 1px solid $placeholder-color
+        margin-bottom: 20px
+        &:focus 
+            border-bottom: 1px solid $secondary-color
+    &__button 
+        margin-top: 20px
+        padding: 15px 40px
+        color: $text-color 
+        font-size: 15px
+        font-weight: 500
+        text-transform: uppercase
+        background-color: $secondary-color
+        border-radius: 10px
+    
