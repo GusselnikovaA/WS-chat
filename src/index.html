@@ -18,9 +18,9 @@
         <!-- /.user -->
 
     <div class="global-message message">
-        <div class="message-area"></div>
+        <div class="message-container"></div>
         <form action="#" class="message-form">
-            <input type="text" class="message__input" placeholder="Введите сообщение...">
+            <input type="text" class="message__input" placeholder="Введите сообщение..." autocomplete="off">
             <button class="message__button">Отправить</button>
         </form>
     </div>
@@ -29,24 +29,38 @@
     </main>
     <!-- /.global -->
 
-    <div class="modal">
-        <div class="modal-container">
-            <div class="modal__icon">
+    <div class="auth">
+        <div class="auth-container">
+            <div class="auth__icon">
                 <img src="img/auth-icon.png" alt="Иконка авторизации">
             </div>
-            <h1 class="modal__title">Авторизация</h1>
-            <span class="modal__subtitle">Введите свои ФИО и придумайте ник, для дальнейшей авторизации</span>
-            <form action="#" class="modal-form">
-                <input type="text" class="modal__input" placeholder="Введите ФИО">
-                <input type="text" class="modal__input" placeholder="Введите свой ник">
-                <button class="modal__button">ВОЙТИ</button>
+            <h1 class="auth__title">Авторизация</h1>
+            <span class="auth__subtitle">Введите свои ФИО и придумайте ник, для дальнейшей авторизации</span>
+            <form action="#" class="auth-form">
+                <input type="text" class="auth__input" placeholder="Введите ФИО">
+                <input type="text" class="auth__input" placeholder="Введите свой ник">
+                <button class="auth__button">ВОЙТИ</button>
             </form>
         </div>
-        <!-- /.modal-container -->
+        <!-- /.auth-container -->
     </div>
-    <!-- /.modal -->
+    <!-- /.auth -->
+
+    <div class="photo">
+        <div class="photo-container">
+            <input type="file">
+            <span class="photo__subtitle">Область для профильной фотографии</span>
+            <form action="#" class="photo-form">
+                <button class="photo__button">отмена</button>
+                <button class="photo__button">сохранить</button>
+            </form>
+        </div>
+        <!-- /.photo-container -->
+    </div>
+    <!-- /.photo -->
 
 
     <script src="js/main.js"></script>
+    <script src="js/server.js"></script>
 </body>
 </html>

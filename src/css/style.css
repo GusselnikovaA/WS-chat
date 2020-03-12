@@ -412,7 +412,7 @@ input::placeholder {
   display: none;
 }
 
-.modal {
+.auth {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -425,10 +425,9 @@ input::placeholder {
   width: 100%;
   height: 100vh;
   background-color: #0e1621;
-  display: none;
 }
 
-.modal-container {
+.auth-container {
   width: 516px;
   min-height: 562px;
   background-color: #17212b;
@@ -447,7 +446,7 @@ input::placeholder {
       justify-content: space-around;
 }
 
-.modal__icon {
+.auth__icon {
   width: 139px;
   height: 139px;
   display: -webkit-box;
@@ -463,13 +462,13 @@ input::placeholder {
   border-radius: 50%;
 }
 
-.modal__title {
+.auth__title {
   color: #ffffff;
   font-size: 24px;
   font-weight: 500;
 }
 
-.modal__subtitle {
+.auth__subtitle {
   color: #7f91a4;
   font-size: 16px;
   max-width: 298px;
@@ -477,7 +476,7 @@ input::placeholder {
   line-height: 1.2;
 }
 
-.modal-form {
+.auth-form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -490,18 +489,18 @@ input::placeholder {
           align-items: center;
 }
 
-.modal__input {
+.auth__input {
   padding: 13px 9px;
   width: 298px;
   border-bottom: 1px solid #858e97;
   margin-bottom: 20px;
 }
 
-.modal__input:focus {
+.auth__input:focus {
   border-bottom: 1px solid #5288c1;
 }
 
-.modal__button {
+.auth__button {
   margin-top: 20px;
   padding: 15px 40px;
   color: #ffffff;
@@ -515,9 +514,7 @@ input::placeholder {
 .global {
   width: 100%;
   height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: none;
 }
 
 .global-user {
@@ -562,5 +559,67 @@ input::placeholder {
   font-size: 14px;
   background-color: #5288c1;
   border-radius: 10px;
+}
+
+.photo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #0e1621;
+  display: none;
+}
+
+.photo-container {
+  width: 364px;
+  min-height: 452px;
+  background-color: #17212b;
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.photo__subtitle {
+  color: #7f91a4;
+  font-size: 14px;
+}
+
+.photo-form {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.photo__button {
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #5288c1;
+  border-radius: 10px;
+}
+
+.photo__button:hover {
+  background-color: #202e3c;
+}
+
+.photo__button:first-child {
+  margin-right: 10px;
 }
 /*# sourceMappingURL=style.css.map */
