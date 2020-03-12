@@ -13,19 +13,79 @@
 
     <main class="global">
         <div class="global-user user">
+            <div class="user-info">
+                <label for="user__photo" >
+                    <div class="user__avatar">
+                        <img src="img/photo-camera.png" alt="аватар">
+                    </div>
+                </label>
+                <input type="file" class="user__photo" id="user__photo" name="user__photo">
+                <div class="user__wrap">
+                    <div class="user__name">Анна Гусельникова</div>
+                    <div class="user__nick">@annanac</div>
+                </div>
+            </div>
+            <!-- /.user-info -->
 
+            <div class="user-online">
+                <div class="user-online__subtitle">Online <span> (2)</span></div>
+                <div class="user-info user_online">
+                    <div class="user__avatar user-online__avatar">
+                        <img src="img/photo-camera.png" alt="аватар">
+                    </div>
+                    <div class="user__wrap">
+                        <div class="user__name user-online__name">Анна Гусельникова</div>
+                        <div class="user__nick">@annanac</div>
+                    </div>
+                </div>
+                <!-- /.user-info -->
+                <div class="user-info user_online">
+                    <div class="user__avatar user-online__avatar">
+                        <img src="img/photo-camera.png" alt="аватар">
+                    </div>
+                    <div class="user__wrap">
+                        <div class="user__name user-online__name">Юрий Бараник</div>
+                        <div class="user__nick">@banana</div>
+                    </div>
+                </div>
+                <!-- /.user-info -->
+            </div>
         </div>
         <!-- /.user -->
 
-    <div class="global-message message">
-        <div class="message-container"></div>
-        <form action="#" class="message-form">
-            <input type="text" class="message__input" placeholder="Введите сообщение..." autocomplete="off">
-            <button class="message__button">Отправить</button>
-        </form>
-    </div>
-    <!-- /.message -->
-
+        <div class="global-message message">
+            <div class="message-container">
+                <div class="message-item">
+                    <div class="message-item__avatar">
+                        <img src="img/photo-camera.png" alt="аватар">
+                    </div>
+                    <div class="message-item__content">
+                        <div class="message-item__info">
+                            <span class="message-item__nick">Анна</span>
+                            <span class="message-item__time">10:25</span>
+                        </div>
+                        <div class="message-item__text">Привет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугр</div>
+                    </div>
+                </div>
+                <div class="message-item message_send">
+                    <div class="message-item__avatar message_send__avatar">
+                        <img src="img/photo-camera.png" alt="фотокамера">
+                    </div>
+                    <div class="message-item__content message_send__content">
+                        <div class="message-item__info">
+                            <span class="message-item__nick">Юрий</span>
+                            <span class="message-item__time">10:28</span>
+                        </div>
+                        <div class="message-item__text">Привет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугр</div>
+                    </div>
+                </div>
+            </div>
+            <form action="#" class="message-form">
+                <input type="text" class="message__input" placeholder="Введите сообщение..." autocomplete="off">
+                <button class="message__button">Отправить</button>
+            </form>
+        </div>
+        <!-- /.message -->
     </main>
     <!-- /.global -->
 
@@ -60,7 +120,7 @@
     <!-- /.photo -->
 
 
-    <script src="js/main.js"></script>
-    <script src="js/server.js"></script>
+    <!-- <script src="js/main.js"></script>
+    <script src="js/server.js"></script> -->
 </body>
 </html>
