@@ -7,8 +7,6 @@ const server = new WebSocket.Server({
     clientTracking: true
 });
 
-const clients = [];
-
 // отслеживаем событие connection
 server.on('connection', function connection(ws) {
     ws.on('message', function incoming(data) {

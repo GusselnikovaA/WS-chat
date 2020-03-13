@@ -11,10 +11,42 @@
 </head>
 <body>
 
-    <main class="global">
+    <div class="auth show">
+        <div class="auth-container">
+            <div class="auth__icon">
+                <img src="img/auth-icon.png" alt="Иконка авторизации">
+            </div>
+            <h1 class="auth__title">Авторизация</h1>
+            <span class="auth__subtitle">Введите свои ФИО и придумайте ник, для дальнейшей авторизации</span>
+            <form action="#" class="auth-form">
+                <input type="text" class="auth__input auth__name" placeholder="Введите ФИО">
+                <input type="text" class="auth__input auth__nick" placeholder="Введите свой ник">
+                <button class="auth__button">ВОЙТИ</button>
+            </form>
+        </div>
+        <!-- /.auth-container -->
+    </div>
+    <!-- /.auth -->
+
+    <div class="photo hide">
+        <div class="photo-container">
+            <div class="photo-wrap">
+                <img src="" alt="">
+            </div>
+            <span class="photo__subtitle">Область для профильной фотографии</span>
+            <form action="#" class="photo-form">
+                <button class="photo__button" id="photo__save">отмена</button>
+                <button class="photo__button" id="photo__cancel">сохранить</button>
+            </form>
+        </div>
+        <!-- /.photo-container -->
+    </div>
+    <!-- /.photo -->
+
+    <main class="global hide">
         <div class="global-user user">
             <div class="user-info">
-                <label for="user__photo" >
+                <!-- <label for="user__photo" >
                     <div class="user__avatar">
                         <img src="img/photo-camera.png" alt="аватар">
                     </div>
@@ -23,13 +55,13 @@
                 <div class="user__wrap">
                     <div class="user__name">Анна Гусельникова</div>
                     <div class="user__nick">@annanac</div>
-                </div>
+                </div> -->
             </div>
-            <!-- /.user-info -->
 
             <div class="user-online">
-                <div class="user-online__subtitle">Online <span> (2)</span></div>
-                <div class="user-info user_online">
+                <div class="user-online__subtitle">Online (<span class="user-online__number">2</span>)</div>
+
+                <!-- <div class="user-info user_online">
                     <div class="user__avatar user-online__avatar">
                         <img src="img/photo-camera.png" alt="аватар">
                     </div>
@@ -37,9 +69,9 @@
                         <div class="user__name user-online__name">Анна Гусельникова</div>
                         <div class="user__nick">@annanac</div>
                     </div>
-                </div>
-                <!-- /.user-info -->
-                <div class="user-info user_online">
+                </div> -->
+
+                <!-- <div class="user-info user_online">
                     <div class="user__avatar user-online__avatar">
                         <img src="img/photo-camera.png" alt="аватар">
                     </div>
@@ -47,15 +79,15 @@
                         <div class="user__name user-online__name">Юрий Бараник</div>
                         <div class="user__nick">@banana</div>
                     </div>
-                </div>
-                <!-- /.user-info -->
+                </div> -->
+
             </div>
         </div>
         <!-- /.user -->
 
         <div class="global-message message">
             <div class="message-container">
-                <div class="message-item">
+                <!-- <div class="message-item">
                     <div class="message-item__avatar">
                         <img src="img/photo-camera.png" alt="аватар">
                     </div>
@@ -66,8 +98,9 @@
                         </div>
                         <div class="message-item__text">Привет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугр</div>
                     </div>
-                </div>
-                <div class="message-item message_send">
+                </div> -->
+
+                <!-- <div class="message-item message_send">
                     <div class="message-item__avatar message_send__avatar">
                         <img src="img/photo-camera.png" alt="фотокамера">
                     </div>
@@ -78,7 +111,7 @@
                         </div>
                         <div class="message-item__text">Привет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугр</div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <form action="#" class="message-form">
                 <input type="text" class="message__input" placeholder="Введите сообщение..." autocomplete="off">
@@ -89,38 +122,55 @@
     </main>
     <!-- /.global -->
 
-    <div class="auth">
-        <div class="auth-container">
-            <div class="auth__icon">
-                <img src="img/auth-icon.png" alt="Иконка авторизации">
+    <script src="js/main.js" type="module"></script>
+    <!-- <script src="js/server.js"></script> -->
+
+    <script id="userInfoTemplate" type="text/template">
+        {{#each list}}
+        <label for="user__photo" >
+            <div class="user__avatar">
+                <img src="{{img}}" alt="аватар">
             </div>
-            <h1 class="auth__title">Авторизация</h1>
-            <span class="auth__subtitle">Введите свои ФИО и придумайте ник, для дальнейшей авторизации</span>
-            <form action="#" class="auth-form">
-                <input type="text" class="auth__input" placeholder="Введите ФИО">
-                <input type="text" class="auth__input" placeholder="Введите свой ник">
-                <button class="auth__button">ВОЙТИ</button>
-            </form>
+        </label>
+        <input type="file" class="user__photo" id="user__photo" name="user__photo">
+        <div class="user__wrap">
+            <div class="user__name">{{name}}</div>
+            <div class="user__nick">{{nick}}</div>
         </div>
-        <!-- /.auth-container -->
-    </div>
-    <!-- /.auth -->
+        {{/each}}
+    </script>
 
-    <div class="photo">
-        <div class="photo-container">
-            <input type="file">
-            <span class="photo__subtitle">Область для профильной фотографии</span>
-            <form action="#" class="photo-form">
-                <button class="photo__button">отмена</button>
-                <button class="photo__button">сохранить</button>
-            </form>
+    <script id="userOnlineTemplate" type="text/template">
+        {{#each list}}
+        <div class="user-info user_online">
+            <div class="user__avatar user-online__avatar">
+                <img src="{{img}}" alt="аватар">
+            </div>
+            <div class="user__wrap">
+                <div class="user__name user-online__name">{{name}}</div>
+                <div class="user__nick">{{nick}}</div>
+            </div>
         </div>
-        <!-- /.photo-container -->
-    </div>
-    <!-- /.photo -->
+        {{/each}}
+    </script>
+
+    <script id="messageTemplate" type="text/template">
+        {{#each list}}
+        <div class="message-item">
+            <div class="message-item__avatar">
+                <img src="{{img}}" alt="аватар">
+            </div>
+            <div class="message-item__content">
+                <div class="message-item__info">
+                    <span class="message-item__nick">{{nick}}</span>
+                    <span class="message-item__time">{{time}}</span>
+                </div>
+                <div class="message-item__text">{{message}}</div>
+            </div>
+        </div>
+        {{/each}}
+    </script>
 
 
-    <!-- <script src="js/main.js"></script>
-    <script src="js/server.js"></script> -->
 </body>
 </html>

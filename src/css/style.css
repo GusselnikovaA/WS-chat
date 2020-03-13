@@ -412,10 +412,13 @@ input::placeholder {
   display: none;
 }
 
-.auth {
+.show {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.auth {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -425,7 +428,6 @@ input::placeholder {
   width: 100%;
   height: 100vh;
   background-color: #0e1621;
-  display: none;
 }
 
 .auth-container {
@@ -515,9 +517,6 @@ input::placeholder {
 .global {
   width: 100%;
   height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 .global-user {
@@ -742,9 +741,6 @@ label {
 }
 
 .photo {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -754,7 +750,6 @@ label {
   width: 100%;
   height: 100vh;
   background-color: #0e1621;
-  display: none;
 }
 
 .photo-container {
@@ -774,6 +769,11 @@ label {
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+}
+
+.photo-wrap {
+  width: 284px;
+  height: 308px;
 }
 
 .photo__subtitle {

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/GusselnikovaA/Chat.git#readme",
   "dependencies": {
     "gulp": "^4.0.2",
+    "handlebars": "^4.7.3",
     "ws": "^7.2.3"
   },
   "devDependencies": {
