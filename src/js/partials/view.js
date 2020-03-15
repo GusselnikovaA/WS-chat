@@ -1,6 +1,6 @@
 export default {
-    render(templateName, model) { //header
-      templateName = templateName + 'Template';//headerTemplate
+    render(templateName, model) { //userInfo
+      templateName = templateName + 'Template'; //userInfoTemplate
   
       const templateElement = document.getElementById(templateName);
       const templateSource = templateElement.innerHTML;

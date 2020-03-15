@@ -23,6 +23,9 @@
     "ws": "^7.2.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-imagemin": "^7.1.0",

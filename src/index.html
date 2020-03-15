@@ -123,8 +123,8 @@
     <!-- /.global -->
 
     <script src="js/main.js" type="module"></script>
-    <!-- <script src="js/server.js"></script> -->
 
+    <!-- html шаблон вывода информации о пользователе -->
     <script id="userInfoTemplate" type="text/template">
         {{#each list}}
         <label for="user__photo" >
@@ -140,6 +140,7 @@
         {{/each}}
     </script>
 
+    <!-- html шаблон вывода подключенных пользователей -->
     <script id="userOnlineTemplate" type="text/template">
         {{#each list}}
         <div class="user-info user_online">
@@ -154,6 +155,7 @@
         {{/each}}
     </script>
 
+    <!-- html шаблон вывода сообщений -->
     <script id="messageTemplate" type="text/template">
         {{#each list}}
         <div class="message-item">

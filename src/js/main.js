@@ -1,7 +1,7 @@
-import View from './view.js';
+import View from './partials/view.js';
 
 const Handlebars = require("handlebars");
-// const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket("ws://localhost:8080");
 
 const auth = document.querySelector('.auth');
 const authInputName = document.querySelector('.auth__name');
@@ -30,7 +30,7 @@ const photoCancel = document.querySelector('#photo__cancel');
 const user = {};
 
 // отслеживаем установление соединения с сервером
-// ws.on('open', function open() {
+ws.on('open', function open() {
     authButton.addEventListener('click', () => {
         if (authInputName != '' && authInputNick != '') {
             user.name = authInputName.value;
@@ -43,7 +43,7 @@ const user = {};
             userInfo.innerHtml = View.render('userInfo', user);
         }
     });
-// });
+});
 
 // открывает и закрывает pop up окна
 function changeWindow (closeWindow, openWindow) {
@@ -66,18 +66,18 @@ function addMessage(message) {
 }
 
 // отслеживаем получение сообщения с сервера
-// ws.on('message', function incoming(data) {
-//     addMessage(data);
-// });
+ws.on('message', function incoming(data) {
+    addMessage(data);
+});
 
 // отправка введенного сообщения на сервер
-// function sendMessage() {
-//     ws.send(messageInput.value);
-//     messageInput.value = '';
-// }
+function sendMessage() {
+    ws.send(messageInput.value);
+    messageInput.value = '';
+}
 
-// sendButton.addEventListener('click', () => {
-//     if (messageInput.value != '') {
-//         sendMessage();
-//     }
-// });
+sendButton.addEventListener('click', () => {
+    if (messageInput.value != '') {
+        sendMessage();
+    }
+});
