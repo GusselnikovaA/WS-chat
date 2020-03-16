@@ -32,7 +32,7 @@
     <div class="photo hide">
         <div class="photo-container">
             <div class="photo-wrap">
-                <img src="" alt="">
+                <img src="" id="avatar" alt="">
             </div>
             <span class="photo__subtitle">Область для профильной фотографии</span>
             <form action="#" class="photo-form">
@@ -46,18 +46,7 @@
 
     <main class="global hide">
         <div class="global-user user">
-            <div class="user-info">
-                <!-- <label for="user__photo" >
-                    <div class="user__avatar">
-                        <img src="img/photo-camera.png" alt="аватар">
-                    </div>
-                </label>
-                <input type="file" class="user__photo" id="user__photo" name="user__photo">
-                <div class="user__wrap">
-                    <div class="user__name">Анна Гусельникова</div>
-                    <div class="user__nick">@annanac</div>
-                </div> -->
-            </div>
+            <div class="user-info"></div>
 
             <div class="user-online">
                 <div class="user-online__subtitle">Online (<span class="user-online__number"></span>)</div>
@@ -129,7 +118,7 @@
     <script id="userInfoTemplate" type="text/template">
         <label for="user__photo" >
             <div class="user__avatar">
-                <img src="{{img}}" alt="аватар">
+                <img src="{{photo}}" alt="аватар">
             </div>
         </label>
         <input type="file" class="user__photo" id="user__photo" name="user__photo">
@@ -144,7 +133,7 @@
         {{#each list}}
         <div class="user-info user_online">
             <div class="user__avatar user-online__avatar">
-                <img src="{{img}}" alt="аватар">
+                <img src="{{photo}}" alt="аватар">
             </div>
             <div class="user__wrap">
                 <div class="user__name user-online__name">{{name}}</div>
@@ -159,7 +148,7 @@
         {{#each list}}
         <div class="message-item">
             <div class="message-item__avatar">
-                <img src="{{img}}" alt="аватар">
+                <img src="{{photo}}" alt="аватар">
             </div>
             <div class="message-item__content">
                 <div class="message-item__info">

@@ -20,13 +20,13 @@ const onlineUsers = document.querySelector('.user-online__number');
 
 const photo = document.querySelector('.photo');
 const photoContainer = document.querySelector('.photo-wrap');
+const avatar = document.getElementById('avatar');
 const photoInput = document.querySelector('#user__photo');
 const photoSave = document.querySelector('#photo__save');
 const photoCancel = document.querySelector('#photo__cancel');
 
 
 const user = {};
-const nicks = [];
 
 
 // отслеживаем установление соединения с сервером
@@ -38,16 +38,17 @@ ws.onopen = function (e) {
 
 // авторизация пользователя
 function authorization () {
-    authButton.addEventListener('click', () => {
+    authButton.addEventListener('click', (e) => {
+        e.preventDefault();
         if (authInputName.value != '' && authInputNick.value != '') {
             user.name = authInputName.value;
             user.nick = authInputNick.value;
-            user.img = 'img/photo-camera.png';
+            user.photo = 'img/photo-camera.png';
 
             changeWindow(auth, chatWindow);
             userInfo.innerHTML = View.render('userInfoTemplate', user);
 
-            ws.send(user);
+            ws.send(JSON.stringify(user));
         } else  if (authInputName.value === '' && authInputNick.value === '') {
             authInputName.classList.add('auth__input_error');
             authInputNick.classList.add('auth__input_error');
@@ -70,30 +71,60 @@ function changeWindow (closeWindow, openWindow) {
 }
    
 
-// выводиn сообщение на экран на экран
-// надо добавить проверку кем отправлено сообщение, активным пользователем или нет
+// выводит сообщение на экран на экран
+// надо добавить проверку кем отправлено сообщение, пользователем или нет
 function addMessage(message) {
     messageContainer.innerHTML = View.render('messageTemplate', message);
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
-// отслеживаем получение сообщения с сервера
+// отслеживаем получение данных с сервера
 ws.onmessage = function (event) {
     console.log(`[message] Данные получены с сервера: ${event.data}`);
     addMessage(event.data);
 };
 
+// ошибка 
 ws.onerror = function () {
-    alert('Соединение закрыто или не может быть открыто!');
+    console.log(`[error] ${error.message}`);
 };
+
 // отправка введенного сообщения на сервер
 function sendMessage() {
     ws.send(messageInput.value);
     messageInput.value = '';
 }
 
-sendButton.addEventListener('click', () => {
+sendButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
     if (messageInput.value != '') {
         sendMessage();
     }
 });
+
+// загрузка аватара
+function loadAvatar(e) {
+    const fileReader = new FileReader();
+
+    fileReader.addEventListener('load', (e) => {
+        avatar.src = fileReader.result;
+    })
+
+    const file = e.target.files[0];
+
+    if (file) {
+        if (file.size > 300 * 1024) {
+            alert('Слишком большой файл')
+        } else {
+            photo.classList.add('show');
+            fileReader.readAsDataURL(file);
+        }
+    }
+};
+
+userInfo.addEventListener('click', (e) => {
+    if (e.target.classList.contains('user__photo')) {
+        loadAvatar(e);
+    }
+})
