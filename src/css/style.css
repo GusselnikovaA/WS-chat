@@ -503,6 +503,26 @@ input::placeholder {
   border-bottom: 1px solid #5288c1;
 }
 
+.auth__input_error {
+  border-bottom: 1px solid red;
+}
+
+.auth__input_error::-webkit-input-placeholder {
+  color: red;
+}
+
+.auth__input_error:-ms-input-placeholder {
+  color: red;
+}
+
+.auth__input_error::-ms-input-placeholder {
+  color: red;
+}
+
+.auth__input_error::placeholder {
+  color: red;
+}
+
 .auth__button {
   margin-top: 20px;
   padding: 15px 40px;

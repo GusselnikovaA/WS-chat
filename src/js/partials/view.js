@@ -1,13 +1,11 @@
 export default {
-    render(templateName, model) { //userInfo
-      templateName = templateName + 'Template'; //userInfoTemplate
+    render(templateName, model) { 
+      const templateElement = document.getElementById(templateName); //script
+      const templateSource = templateElement.innerHTML; // html внутри script
+      const renderFn = Handlebars.compile(templateSource); // компиляция шаблона
   
-      const templateElement = document.getElementById(templateName);
-      const templateSource = templateElement.innerHTML;
-      const renderFn = Handlebars.compile(templateSource);
-  
-      return renderFn(model);
+      return renderFn(model); // возвращаем готовый html код
     }
   };
   
-  // view.render('header', {first_name: 'Анна'})
+  // View.render('userInfoTemplate', {name: 'Анна', nick: 'annanac', img: 'img/img.jpeg'})

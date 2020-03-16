@@ -1,13 +1,12 @@
 import View from './partials/view.js';
 
-const Handlebars = require("handlebars");
 const ws = new WebSocket("ws://localhost:8080");
+console.log(ws);
 
 const auth = document.querySelector('.auth');
 const authInputName = document.querySelector('.auth__name');
 const authInputNick = document.querySelector('.auth__nick');
 const authButton = document.querySelector('.auth__button');
-
 
 const chatWindow = document.querySelector('.global');
 
@@ -26,24 +25,41 @@ const photoSave = document.querySelector('#photo__save');
 const photoCancel = document.querySelector('#photo__cancel');
 
 
-
 const user = {};
+const nicks = [];
+
 
 // отслеживаем установление соединения с сервером
-ws.on('open', function open() {
+ws.onopen = function (e) {
+    console.log("[open] Соединение установлено");
+    authorization();
+    onlineUsers.innerText = 1;
+};
+
+// авторизация пользователя
+function authorization () {
     authButton.addEventListener('click', () => {
-        if (authInputName != '' && authInputNick != '') {
+        if (authInputName.value != '' && authInputNick.value != '') {
             user.name = authInputName.value;
             user.nick = authInputNick.value;
-            user.img = '../img/photo-camera.png';
-
-            console.log(user);
+            user.img = 'img/photo-camera.png';
 
             changeWindow(auth, chatWindow);
-            userInfo.innerHtml = View.render('userInfo', user);
+            userInfo.innerHTML = View.render('userInfoTemplate', user);
+
+            ws.send(user);
+        } else  if (authInputName.value === '' && authInputNick.value === '') {
+            authInputName.classList.add('auth__input_error');
+            authInputNick.classList.add('auth__input_error');
+        } else  if (authInputName.value === '') {
+            authInputName.classList.add('auth__input_error');
+            authInputNick.classList.remove('auth__input_error');
+        } else if (authInputNick.value === '') {
+            authInputNick.classList.add('auth__input_error');
+            authInputName.classList.remove('auth__input_error');
         }
     });
-});
+}
 
 // открывает и закрывает pop up окна
 function changeWindow (closeWindow, openWindow) {
@@ -54,22 +70,22 @@ function changeWindow (closeWindow, openWindow) {
 }
    
 
-// создает элемент с сообщением полученным с сервера и выводит на экран
+// выводиn сообщение на экран на экран
+// надо добавить проверку кем отправлено сообщение, активным пользователем или нет
 function addMessage(message) {
-    const messageItem = document.createElement('div');
-
-    messageItem.className = 'message-item';
-    messageItem.textContent = message;
-
-    messageContainer.appendChild(messageItem);
+    messageContainer.innerHTML = View.render('messageTemplate', message);
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
 // отслеживаем получение сообщения с сервера
-ws.on('message', function incoming(data) {
-    addMessage(data);
-});
+ws.onmessage = function (event) {
+    console.log(`[message] Данные получены с сервера: ${event.data}`);
+    addMessage(event.data);
+};
 
+ws.onerror = function () {
+    alert('Соединение закрыто или не может быть открыто!');
+};
 // отправка введенного сообщения на сервер
 function sendMessage() {
     ws.send(messageInput.value);
