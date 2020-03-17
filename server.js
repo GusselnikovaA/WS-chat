@@ -6,16 +6,57 @@ const server = new WebSocket.Server({
     port: 8080,
     clientTracking: true
 });
+const users = {
+    type: 'allUsers',
+    allUsers: {
+        list: []
+    }
+}
 
 // отслеживаем событие connection
 server.on('connection', function connection(ws) {
+    // пришли данные с клиента
     ws.on('message', function incoming(data) {
-        // написать, что мы делаем с поступившим с клиента данными
-        // отправляем всем клиентам например 
-        server.clients.forEach(function each(client) {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(data);
+        const dataBody = JSON.parse(data);
+
+        // если поступили данные о новом пользователе
+        if(dataBody.type ==  'newUser') {
+            ws.user = dataBody.data;
+            users.allUsers.list.push(ws.user);
+
+            server.clients.forEach(function each(client) {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify(dataBody));
+                    client.send(JSON.stringify(users));
+                }
+            });
+        // если поступили данные о фотографии пользователя
+        } else if (dataBody.type == 'photo') {
+            server.clients.forEach(function each(client) {
+                if (client.readyState === WebSocket.OPEN) {
+                    ws.user.photo = dataBody.data;
+                    client.send(JSON.stringify({dataBody, client: ws.user}));
+                }
+            });
+        // если поступили данные о сообщении
+        } else if (dataBody.type == 'message') {
+            server.clients.forEach(function each(client) {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify({dataBody, client: ws.user}));
+                }
+            });
+        }
+    });
+
+    // закрытие подключения
+    ws.on('close', (e) => {
+        users.allUsers.list.forEach(function(user, i) {
+            if (ws.user && user.name == ws.user.name) {
+                users.allUsers.list.splice(i, 1);
             }
         });
-    });
+        server.clients.forEach(function each(client) {
+            client.send(JSON.stringify({users}));
+        });
+    })
 });

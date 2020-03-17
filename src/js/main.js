@@ -15,7 +15,7 @@ const sendButton = document.querySelector('.message__button');
 const messageContainer = document.querySelector('.message-container');
 
 const userInfo = document.querySelector('.user-info');
-const userPhoto = document.querySelector('.user__avatar');
+const userPhotos = document.querySelectorAll('.user__avatar');
 const onlineUsers = document.querySelector('.user-online__number');
 
 const photo = document.querySelector('.photo');
@@ -24,6 +24,8 @@ const photoContainer = document.querySelector('#loadingAvatar');
 const photoSave = document.querySelector('#photo__save');
 const photoCancel = document.querySelector('#photo__cancel');
 
+let avatar;
+
 
 const user = {};
 
@@ -31,6 +33,7 @@ const user = {};
 // отслеживаем установление соединения с сервером
 ws.onopen = function (e) {
     console.log("[open] Соединение установлено");
+    console.log('saveAvatar', userPhotos);
     authorization();
     onlineUsers.innerText = 1;
 };
@@ -47,7 +50,14 @@ function authorization () {
             changeWindow(auth, chatWindow);
             userInfo.innerHTML = View.render('userInfoTemplate', user);
 
-            ws.send(JSON.stringify(user));
+            ws.send(JSON.stringify({
+                type: 'newUser',
+                data: {
+                    name: user.name,
+                    nick: user.nick,
+                    photo: user.photo
+                }
+            }));
         } else  if (authInputName.value === '' && authInputNick.value === '') {
             authInputName.classList.add('auth__input_error');
             authInputNick.classList.add('auth__input_error');
@@ -102,7 +112,7 @@ sendButton.addEventListener('click', (e) => {
     }
 });
 
-// загрузка аватара
+// загрузка аватара в pop up окно
 function loadAvatar(input) {
     changeWindow(chatWindow, photo);
     const file = input.files[0];
@@ -111,25 +121,26 @@ function loadAvatar(input) {
         const fileReader = new FileReader();
 
         fileReader.onloadend = function (e) {
-            photoContainer.src = e.target.result;
+            photoContainer.src = fileReader.result;
+            avatar = fileReader.result;
         };
 
         fileReader.readAsDataURL(file);
     }
 }
 
+// отправляем аватар на сервер
 function saveAvatar() {
-    // отправить данные с фото на сервер
-    //получить ответ в виде ссылки фото на сервере
-    //присвоить эту ссылку в объект
-    user.photo = 'https://sun9-70.userapi.com/impg/c854524/v854524651/1d3139/96GE5X4MDuQ.jpg?size=200x0&quality=90&sign=eb3eb832e9c811d769d9922cfe702986';
-    console.log(user);
-    console.log(userPhoto.children);
+    ws.send(JSON.stribgify({
+        type: 'photo',
+        data: avatar
+    }))
 }
 
 
 userInfo.addEventListener('change', (e) => {
     const element = e.target;
+    console.log('listeener', userPhotos);
 
     if (element.classList.contains('user__photo')) {
         loadAvatar(element);
