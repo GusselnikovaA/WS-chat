@@ -13,6 +13,25 @@
         background-color: $icon-color
         border-radius: 50%
         margin-right: 15px
+        position: relative
+        &_download
+            display: flex
+            justify-content: center
+            align-items: center
+            position: absolute
+            left: 0
+            top: 0
+            height: 87px
+            width: 87px
+            opacity: 0
+            background-color: $secondary-color
+            color: $text-color 
+            border-radius: 50%
+            font-size: 24px
+            transition: all 0.2s ease-out 0.2s
+        &:hover 
+            .user__avatar_download 
+                opacity: 1
     &__name 
         font-weight: 500
         margin-bottom: 10px 

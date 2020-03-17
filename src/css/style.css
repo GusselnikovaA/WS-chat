@@ -580,6 +580,35 @@ input::placeholder {
   background-color: #242f3d;
   border-radius: 50%;
   margin-right: 15px;
+  position: relative;
+}
+
+.user__avatar_download {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 87px;
+  width: 87px;
+  opacity: 0;
+  background-color: #5288c1;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 24px;
+  -webkit-transition: all 0.2s ease-out 0.2s;
+  transition: all 0.2s ease-out 0.2s;
+}
+
+.user__avatar:hover .user__avatar_download {
+  opacity: 1;
 }
 
 .user__name {
@@ -792,8 +821,18 @@ label {
 }
 
 .photo-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 284px;
   height: 308px;
+  overflow: hidden;
 }
 
 .photo__subtitle {

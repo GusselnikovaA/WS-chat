@@ -15,13 +15,12 @@ const sendButton = document.querySelector('.message__button');
 const messageContainer = document.querySelector('.message-container');
 
 const userInfo = document.querySelector('.user-info');
-const userInfoTemplate = document.getElementById("userInfoTemplate");
+const userPhoto = document.querySelector('.user__avatar');
 const onlineUsers = document.querySelector('.user-online__number');
 
 const photo = document.querySelector('.photo');
-const photoContainer = document.querySelector('.photo-wrap');
-const avatar = document.getElementById('avatar');
-const photoInput = document.querySelector('#user__photo');
+// const photoContainer = document.querySelector('.photo-wrap');
+const photoContainer = document.querySelector('#loadingAvatar');
 const photoSave = document.querySelector('#photo__save');
 const photoCancel = document.querySelector('#photo__cancel');
 
@@ -104,27 +103,45 @@ sendButton.addEventListener('click', (e) => {
 });
 
 // загрузка аватара
-function loadAvatar(e) {
-    const fileReader = new FileReader();
-
-    fileReader.addEventListener('load', (e) => {
-        avatar.src = fileReader.result;
-    })
-
-    const file = e.target.files[0];
+function loadAvatar(input) {
+    changeWindow(chatWindow, photo);
+    const file = input.files[0];
 
     if (file) {
-        if (file.size > 300 * 1024) {
-            alert('Слишком большой файл')
-        } else {
-            photo.classList.add('show');
-            fileReader.readAsDataURL(file);
-        }
-    }
-};
+        const fileReader = new FileReader();
 
-userInfo.addEventListener('click', (e) => {
-    if (e.target.classList.contains('user__photo')) {
-        loadAvatar(e);
+        fileReader.onloadend = function (e) {
+            photoContainer.src = e.target.result;
+        };
+
+        fileReader.readAsDataURL(file);
     }
-})
+}
+
+function saveAvatar() {
+    // отправить данные с фото на сервер
+    //получить ответ в виде ссылки фото на сервере
+    //присвоить эту ссылку в объект
+    user.photo = 'https://sun9-70.userapi.com/impg/c854524/v854524651/1d3139/96GE5X4MDuQ.jpg?size=200x0&quality=90&sign=eb3eb832e9c811d769d9922cfe702986';
+    console.log(user);
+    console.log(userPhoto.children);
+}
+
+
+userInfo.addEventListener('change', (e) => {
+    const element = e.target;
+
+    if (element.classList.contains('user__photo')) {
+        loadAvatar(element);
+    }
+
+    photoCancel.addEventListener('click', () => {
+        changeWindow(photo, chatWindow);
+    });
+
+    photoSave.addEventListener('click', (e) => {
+        saveAvatar();
+        changeWindow(photo, chatWindow);
+    });
+});
+

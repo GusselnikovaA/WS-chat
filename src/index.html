@@ -6,6 +6,7 @@
 
     <title>Чат</title>
 
+    <link href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,500&display=swap&subset=cyrillic" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js"></script>
@@ -32,12 +33,12 @@
     <div class="photo hide">
         <div class="photo-container">
             <div class="photo-wrap">
-                <img src="" id="avatar" alt="">
+                <img src="" id="loadingAvatar" alt="">
             </div>
             <span class="photo__subtitle">Область для профильной фотографии</span>
             <form action="#" class="photo-form">
-                <button class="photo__button" id="photo__save">отмена</button>
-                <button class="photo__button" id="photo__cancel">сохранить</button>
+                <button class="photo__button" id="photo__cancel">отмена</button>
+                <button class="photo__button" id="photo__save">сохранить</button>
             </form>
         </div>
         <!-- /.photo-container -->
@@ -118,6 +119,9 @@
     <script id="userInfoTemplate" type="text/template">
         <label for="user__photo" >
             <div class="user__avatar">
+                <div class="user__avatar_download">
+                    <i class="fas fa-cloud-download-alt"></i>
+                </div>
                 <img src="{{photo}}" alt="аватар">
             </div>
         </label>
