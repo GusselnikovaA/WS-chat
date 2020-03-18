@@ -48,31 +48,8 @@
     <main class="global hide">
         <div class="global-user user">
             <div class="user-info"></div>
-
-            <div class="user-online">
-                <div class="user-online__subtitle">Online (<span class="user-online__number"></span>)</div>
-
-                <!-- <div class="user-info user_online">
-                    <div class="user__avatar user-online__avatar">
-                        <img src="img/photo-camera.png" alt="аватар">
-                    </div>
-                    <div class="user__wrap">
-                        <div class="user__name user-online__name">Анна Гусельникова</div>
-                        <div class="user__nick">@annanac</div>
-                    </div>
-                </div> -->
-
-                <!-- <div class="user-info user_online">
-                    <div class="user__avatar user-online__avatar">
-                        <img src="img/photo-camera.png" alt="аватар">
-                    </div>
-                    <div class="user__wrap">
-                        <div class="user__name user-online__name">Юрий Бараник</div>
-                        <div class="user__nick">@banana</div>
-                    </div>
-                </div> -->
-
-            </div>
+            <div class="user-online__subtitle">Online (<span class="user-online__number"></span>)</div>
+            <div class="user-online"></div>
         </div>
         <!-- /.user -->
 
@@ -117,6 +94,7 @@
 
     <!-- html шаблон вывода информации о пользователе -->
     <script id="userInfoTemplate" type="text/template">
+        {{#each list}}
         <label for="user__photo" >
             <div class="user__avatar">
                 <div class="user__avatar_download">
@@ -130,6 +108,7 @@
             <div class="user__name">{{name}}</div>
             <div class="user__nick">{{nick}}</div>
         </div>
+        {{/each}}
     </script>
 
     <!-- html шаблон вывода подключенных пользователей -->
@@ -151,7 +130,7 @@
     <script id="messageTemplate" type="text/template">
         {{#each list}}
         <div class="message-item">
-            <div class="message-item__avatar">
+            <div class="user__avatar message-item__avatar">
                 <img src="{{photo}}" alt="аватар">
             </div>
             <div class="message-item__content">

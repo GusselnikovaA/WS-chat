@@ -11,38 +11,43 @@ const users = {
     allUsers: {
         list: []
     }
-}
+};
 
 // отслеживаем событие connection
 server.on('connection', function connection(ws) {
+    // отправка данных обо всех онлайн пользователях
+    if (users.allUsers.list.length) {
+        ws.send(JSON.stringify({users}));
+    }
     // пришли данные с клиента
-    ws.on('message', function incoming(data) {
-        const dataBody = JSON.parse(data);
+    ws.on('message', function incoming(message) {
+        let messageBody = JSON.parse(message);
 
         // если поступили данные о новом пользователе
-        if(dataBody.type ==  'newUser') {
-            ws.user = dataBody.data;
+        if(messageBody.type == 'newUser') {
+            ws.user = messageBody.data;
             users.allUsers.list.push(ws.user);
 
             server.clients.forEach(function each(client) {
                 if (client.readyState === WebSocket.OPEN) {
-                    client.send(JSON.stringify(dataBody));
+                    client.send(JSON.stringify({content: messageBody, client: ws.user}));
                     client.send(JSON.stringify(users));
                 }
             });
         // если поступили данные о фотографии пользователя
-        } else if (dataBody.type == 'photo') {
+        } else if (messageBody.type == 'photo') {
+            ws.user.photo = messageBody.data;
+
             server.clients.forEach(function each(client) {
                 if (client.readyState === WebSocket.OPEN) {
-                    ws.user.photo = dataBody.data;
-                    client.send(JSON.stringify({dataBody, client: ws.user}));
+                    client.send(JSON.stringify({content: messageBody, client: ws.user}));
                 }
             });
         // если поступили данные о сообщении
-        } else if (dataBody.type == 'message') {
+        } else if (messageBody.type == 'message') {
             server.clients.forEach(function each(client) {
                 if (client.readyState === WebSocket.OPEN) {
-                    client.send(JSON.stringify({dataBody, client: ws.user}));
+                    client.send(JSON.stringify({content: messageBody, client: ws.user}));
                 }
             });
         }
@@ -58,5 +63,5 @@ server.on('connection', function connection(ws) {
         server.clients.forEach(function each(client) {
             client.send(JSON.stringify({users}));
         });
-    })
+    });
 });

@@ -1,7 +1,6 @@
 import View from './partials/view.js';
 
 const ws = new WebSocket("ws://localhost:8080");
-console.log(ws);
 
 const auth = document.querySelector('.auth');
 const authInputName = document.querySelector('.auth__name');
@@ -15,8 +14,9 @@ const sendButton = document.querySelector('.message__button');
 const messageContainer = document.querySelector('.message-container');
 
 const userInfo = document.querySelector('.user-info');
-const userPhotos = document.querySelectorAll('.user__avatar');
-const onlineUsers = document.querySelector('.user-online__number');
+// const userPhotos = document.querySelectorAll('.user__avatar');
+const userOnline = document.querySelector('.user-online');
+const usersOnline = document.querySelector('.user-online__number');
 
 const photo = document.querySelector('.photo');
 // const photoContainer = document.querySelector('.photo-wrap');
@@ -26,36 +26,59 @@ const photoCancel = document.querySelector('#photo__cancel');
 
 let avatar;
 
+const user = {
+    list: []
+};
 
-const user = {};
-
-
-// отслеживаем установление соединения с сервером
+// соединение с сервером. Запуск авторизации
 ws.onopen = function (e) {
     console.log("[open] Соединение установлено");
-    console.log('saveAvatar', userPhotos);
     authorization();
-    onlineUsers.innerText = 1;
 };
+
+// получение данных с сервера
+ws.onmessage = function (message) {
+    let messageBody = JSON.parse(message.data); 
+    console.log(`[message] Данные получены с сервера: ${messageBody}`);
+
+    if (messageBody.type == 'allUsers') {
+        addOnlineUsers(messageBody);
+    } else if (messageBody.content.type == 'newUser') {
+        addUser(messageBody);
+    } else if (messageBody.content.type == 'photo') {
+        addAvatar(messageBody);
+    } else if (messageBody.content.type == 'message') {
+        addMessage(messageBody);
+    }
+};
+
+// ошибка подключения ws
+ws.onerror = function () {
+    console.log(`[error] ${error.message}`);
+};
+
+// открывает и закрывает pop up окна
+function changeWindow (closeWindow, openWindow) {
+    closeWindow.classList.remove('show');
+    closeWindow.classList.add('hide');
+    openWindow.classList.remove('hide');
+    openWindow.classList.add('show');
+}
 
 // авторизация пользователя
 function authorization () {
     authButton.addEventListener('click', (e) => {
         e.preventDefault();
-        if (authInputName.value != '' && authInputNick.value != '') {
-            user.name = authInputName.value;
-            user.nick = authInputNick.value;
-            user.photo = 'img/photo-camera.png';
 
+        if (authInputName.value != '' && authInputNick.value != '') {
             changeWindow(auth, chatWindow);
-            userInfo.innerHTML = View.render('userInfoTemplate', user);
 
             ws.send(JSON.stringify({
                 type: 'newUser',
                 data: {
-                    name: user.name,
-                    nick: user.nick,
-                    photo: user.photo
+                    name: authInputName.value,
+                    nick: authInputNick.value,
+                    photo: 'img/photo-camera.png'
                 }
             }));
         } else  if (authInputName.value === '' && authInputNick.value === '') {
@@ -71,45 +94,77 @@ function authorization () {
     });
 }
 
-// открывает и закрывает pop up окна
-function changeWindow (closeWindow, openWindow) {
-    closeWindow.classList.remove('show');
-    closeWindow.classList.add('hide');
-    openWindow.classList.remove('hide');
-    openWindow.classList.add('show');
-}
-   
-
 // выводит сообщение на экран на экран
 // надо добавить проверку кем отправлено сообщение, пользователем или нет
 function addMessage(message) {
+    const date = new Date();
+    let time = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
     messageContainer.innerHTML = View.render('messageTemplate', message);
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
-// отслеживаем получение данных с сервера
-ws.onmessage = function (event) {
-    console.log(`[message] Данные получены с сервера: ${event.data}`);
-    addMessage(event.data);
-};
+// добавление пользователя
+function addUser(message) {
+    user.list.push({
+        photo: message.content.data.photo,
+        name: message.content.data.name,
+        nick: message.content.data.nick
+    });
 
-// ошибка 
-ws.onerror = function () {
-    console.log(`[error] ${error.message}`);
-};
-
-// отправка введенного сообщения на сервер
-function sendMessage() {
-    ws.send(messageInput.value);
-    messageInput.value = '';
+    userInfo.innerHTML = View.render('userInfoTemplate', user);
 }
 
+// добавление пользователей онлайн
+function addOnlineUsers(message) {
+    userOnline.innerHTML = View.render('userOnlineTemplate', message.allUsers);
+    usersOnline.innerText = message.allUsers.list.length;
+}
+
+// добавление аватара
+function addAvatar(message) {
+    let serverNick = message.client.nick;
+    let serverName = message.client.name;
+    let userArray = user.list;
+
+    userArray.forEach(item => {
+        if (serverName == item.name && serverNick == item.nick) {
+            item.photo = message.content.data;
+            const avatarUrl = item.photo;
+            search(chatWindow, avatarUrl);
+        }
+    });
+}
+
+
+// поиск нужного элемента
+function search (where, url) {
+    const children = [...where.children];
+    for (const element of children) {
+        if (element.parentNode.classList.contains('user__avatar')) {
+            element.src = url;
+        }
+
+        if (element.children.length > 0) {
+            search(element, url);
+        }
+    }
+}
+
+// отправка сообщения на сервер
+function sendMessage() {
+    if (messageInput.value != '') {
+        ws.send({
+            type: 'message',
+            data: messageInput.value 
+        });
+        messageInput.value = '';
+    }
+}
+
+// обработчик отправки сообщения
 sendButton.addEventListener('click', (e) => {
     e.preventDefault();
-
-    if (messageInput.value != '') {
-        sendMessage();
-    }
+    sendMessage();
 });
 
 // загрузка аватара в pop up окно
@@ -127,32 +182,29 @@ function loadAvatar(input) {
 
         fileReader.readAsDataURL(file);
     }
+
+    photoSave.addEventListener('click', (e) => {
+        e.preventDefault();
+        ws.send(JSON.stringify({
+            type: 'photo',
+            data: avatar
+        }));
+        changeWindow(photo, chatWindow);
+    });
+
+    photoCancel.addEventListener('click', (e) => {
+        e.preventDefault();
+        changeWindow(photo, chatWindow);
+    });
 }
 
-// отправляем аватар на сервер
-function saveAvatar() {
-    ws.send(JSON.stribgify({
-        type: 'photo',
-        data: avatar
-    }))
-}
 
-
+// обработчкик загрузки аватара (делегирование) 
 userInfo.addEventListener('change', (e) => {
     const element = e.target;
-    console.log('listeener', userPhotos);
 
     if (element.classList.contains('user__photo')) {
         loadAvatar(element);
     }
-
-    photoCancel.addEventListener('click', () => {
-        changeWindow(photo, chatWindow);
-    });
-
-    photoSave.addEventListener('click', (e) => {
-        saveAvatar();
-        changeWindow(photo, chatWindow);
-    });
 });
 

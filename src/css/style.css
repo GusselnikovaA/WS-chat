@@ -581,6 +581,7 @@ input::placeholder {
   border-radius: 50%;
   margin-right: 15px;
   position: relative;
+  overflow: hidden;
 }
 
 .user__avatar_download {
@@ -603,8 +604,8 @@ input::placeholder {
   color: #ffffff;
   border-radius: 50%;
   font-size: 24px;
-  -webkit-transition: all 0.2s ease-out 0.2s;
-  transition: all 0.2s ease-out 0.2s;
+  -webkit-transition: all 0.2s ease-out 0.1s;
+  transition: all 0.2s ease-out 0.1s;
 }
 
 .user__avatar:hover .user__avatar_download {
@@ -833,6 +834,7 @@ label {
   width: 284px;
   height: 308px;
   overflow: hidden;
+  border-radius: 50%;
 }
 
 .photo__subtitle {
