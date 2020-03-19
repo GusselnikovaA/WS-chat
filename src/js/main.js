@@ -79,7 +79,8 @@ function authorization () {
             changeWindow(auth, chatWindow);
 
             userAvatar.lastElementChild.src = 'img/photo-camera.png';
-            userAvatar.classList.add(authInputNick.value);
+            // userAvatar.classList.add(authInputNick.value);
+            userAvatar.dataset.nick = authInputNick.value;
             userName.innerHTML = authInputName.value;
             userNick.innerHTML = authInputNick.value;
 
@@ -122,10 +123,10 @@ function addOnlineUsers(message) {
 // отправка сообщения на сервер
 function sendMessage() {
     if (messageInput.value != '') {
-        ws.send({
+        ws.send(JSON.stringify({
             type: 'message',
-            data: messageInput.value 
-        });
+            data: messageInput.value
+        }));
         messageInput.value = '';
     }
 }
@@ -136,16 +137,42 @@ sendButton.addEventListener('click', (e) => {
     sendMessage();
 });
 
-// выводит сообщение на экран на экран
-// надо добавить проверку кем отправлено сообщение, пользователем или нет
+// добавление сообщения на клиенте
 function addMessage(message) {
     const date = new Date();
     let time = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    messageContainer.innerHTML = View.render('messageTemplate', message);
+
+    let newMessage = {
+        name: message.client.name,
+        nick: message.client.nick,
+        photo: message.client.photo,
+        messageText: message.content.data,
+        time: time
+    }
+
+    let newMessageContainer = document.createElement('div');
+    newMessageContainer.classList.add('message-item');
+
+    newMessageContainer.innerHTML = View.render('messageTemplate', newMessage);
+
+    if (newMessage.nick === userAvatar.dataset.nick) {
+        newMessageContainer.classList.add('message_my');
+        newMessageContainer.firstElementChild.classList.add('message_my__avatar');
+        newMessageContainer.lastElementChild.classList.add('message_my__content');
+    }
+
+    messageContainer.append(newMessageContainer);
+
+    // [...messageContainer.children].forEach (child => {
+    //     if (child.classList.contains(newMessage.nick)) {
+
+    //     }
+    // })
+
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
-// добавление аватара на клинт
+// добавление аватара на клиенте
 function addAvatar(message) {
     let serverNick = message.client.nick;
     let serverName = message.client.name;
@@ -160,32 +187,11 @@ function addAvatar(message) {
     });
 }
 
-// поиск нужного элемента
-// function searchUser (where, url, className, array) {
-//     const children = [...where.children];
-//     const elementArray = array;
-//     for (const element of children) {
-//         if (element.classList.contains(className)) {
-//             elementArray.push(element);
-//             search(element, url, user__avatar)
-//             [...element.children].forEach(el => {
-//                 if (el.parentNode.classList.contains('user__avatar')) {
-//                     el.src = url;
-//                 }
-//             });
-//         }
-
-//         if (element.children.length > 0) {
-//             searchUser(element, url, className, elementArray);
-//         }
-//     }
-// }
-
 // поиск нужного элемента для загрузки аватара
 function searchAvatarContainer (where, url, serverNick) {
     const children = [...where.children];
     for (const element of children) {
-        if (element.parentNode.classList.contains('user__avatar') && element.parentNode.classList.contains(serverNick)) {
+        if (element.parentNode.classList.contains('user__avatar') && element.parentNode.dataset.nick == serverNick) {
             element.src = url;
         }
 

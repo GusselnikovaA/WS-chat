@@ -688,6 +688,11 @@ label {
   font-size: 14px;
 }
 
+.message-container {
+  height: 90%;
+  overflow: auto;
+}
+
 .message-form {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -697,6 +702,10 @@ label {
           justify-content: space-between;
   background-color: #17212b;
   padding: 20px;
+}
+
+.message__input {
+  width: 85%;
 }
 
 .message__button {
@@ -772,13 +781,13 @@ label {
   color: #7f91a4;
 }
 
-.message_send {
+.message_my {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
 
-.message_send__avatar {
+.message_my__avatar {
   -webkit-box-ordinal-group: 2;
       -ms-flex-order: 1;
           order: 1;
@@ -786,7 +795,7 @@ label {
   margin-left: 10px;
 }
 
-.message_send__content {
+.message_my__content {
   background-color: #365677;
 }
 

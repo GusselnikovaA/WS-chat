@@ -48,7 +48,7 @@
     <main class="global hide">
         <div class="global-user user">
             <div class="user-info">
-                <label for="user__photo" >
+                <label for="user__photo">
                     <div class="user__avatar">
                         <div class="user__avatar_download">
                             <i class="fas fa-cloud-download-alt"></i>
@@ -68,33 +68,7 @@
         <!-- /.user -->
 
         <div class="global-message message">
-            <div class="message-container">
-                <!-- <div class="message-item">
-                    <div class="message-item__avatar">
-                        <img src="img/photo-camera.png" alt="аватар">
-                    </div>
-                    <div class="message-item__content">
-                        <div class="message-item__info">
-                            <span class="message-item__nick">Анна</span>
-                            <span class="message-item__time">10:25</span>
-                        </div>
-                        <div class="message-item__text">Привет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугрПривет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугр</div>
-                    </div>
-                </div> -->
-
-                <!-- <div class="message-item message_send">
-                    <div class="message-item__avatar message_send__avatar">
-                        <img src="img/photo-camera.png" alt="фотокамера">
-                    </div>
-                    <div class="message-item__content message_send__content">
-                        <div class="message-item__info">
-                            <span class="message-item__nick">Юрий</span>
-                            <span class="message-item__time">10:28</span>
-                        </div>
-                        <div class="message-item__text">Привет! Как дела? чмоваирпмылдмиордявлаожфмтшдарфжугр</div>
-                    </div>
-                </div> -->
-            </div>
+            <div class="message-container"></div>
             <form action="#" class="message-form">
                 <input type="text" class="message__input" placeholder="Введите сообщение..." autocomplete="off">
                 <button class="message__button">Отправить</button>
@@ -127,7 +101,7 @@
     <script id="userOnlineTemplate" type="text/template">
         {{#each list}}
         <div class="user-info user_online">
-            <div class="user__avatar user-online__avatar {{nick}}">
+            <div class="user__avatar user-online__avatar" data-nick={{nick}}>
                 <img src="{{photo}}" alt="аватар">
             </div>
             <div class="user__wrap">
@@ -140,20 +114,16 @@
 
     <!-- html шаблон вывода сообщений -->
     <script id="messageTemplate" type="text/template">
-        {{#each list}}
-        <div class="message-item">
-            <div class="user__avatar message-item__avatar {{nick}}">
-                <img src="{{photo}}" alt="аватар">
-            </div>
-            <div class="message-item__content">
-                <div class="message-item__info">
-                    <span class="message-item__nick">{{nick}}</span>
-                    <span class="message-item__time">{{time}}</span>
-                </div>
-                <div class="message-item__text">{{message}}</div>
-            </div>
+        <div class="user__avatar message-item__avatar" data-nick={{nick}}>
+            <img src="{{photo}}" alt="аватар">
         </div>
-        {{/each}}
+        <div class="message-item__content">
+            <div class="message-item__info">
+                <span class="message-item__nick">{{nick}}</span>
+                <span class="message-item__time">{{time}}</span>
+            </div>
+            <div class="message-item__text">{{messageText}}</div>
+        </div>
     </script>
 
 </body>

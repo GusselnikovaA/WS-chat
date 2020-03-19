@@ -3,11 +3,16 @@
     flex-direction: column 
     justify-content: space-between
     font-size: 14px
+    &-container
+        height: 90%
+        overflow: auto
     &-form 
         display: flex
         justify-content: space-between
         background-color: $main-color
         padding: 20px
+    &__input
+        width: 85%
     &__button 
         padding: 8px 20px
         color: $text-color 
@@ -47,7 +52,7 @@
             margin-left: 15px
             color: $subtitle-color
 
-    &_send 
+    &_my
         justify-content: flex-end
         &__avatar 
             order: 1
