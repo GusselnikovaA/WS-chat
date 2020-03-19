@@ -14,6 +14,11 @@ const sendButton = document.querySelector('.message__button');
 const messageContainer = document.querySelector('.message-container');
 
 const userInfo = document.querySelector('.user-info');
+
+const userAvatar = document.querySelector('.user__avatar');
+const userName = document.querySelector('.user__name');
+const userNick = document.querySelector('.user__nick');
+
 // const userPhotos = document.querySelectorAll('.user__avatar');
 const userOnline = document.querySelector('.user-online');
 const usersOnline = document.querySelector('.user-online__number');
@@ -73,6 +78,10 @@ function authorization () {
         if (authInputName.value != '' && authInputNick.value != '') {
             changeWindow(auth, chatWindow);
 
+            userAvatar.lastElementChild.src = 'img/photo-camera.png';
+            userName.innerHTML = authInputName.value;
+            userNick.innerHTML = authInputNick.value;
+
             ws.send(JSON.stringify({
                 type: 'newUser',
                 data: {
@@ -111,7 +120,17 @@ function addUser(message) {
         nick: message.content.data.nick
     });
 
-    userInfo.innerHTML = View.render('userInfoTemplate', user);
+    console.log(user)
+    // let serverNick = message.client.nick;
+    // let serverName = message.client.name;
+    // let userArray = user.list;
+    // console.log(serverName);
+
+    // userArray.forEach(item => {
+    //     if (serverName == item.name && serverNick == item.nick) {
+    //         userInfo.innerHTML = View.render('userInfoTemplate', item);
+    //     }
+    // });
 }
 
 // добавление пользователей онлайн
@@ -120,21 +139,30 @@ function addOnlineUsers(message) {
     usersOnline.innerText = message.allUsers.list.length;
 }
 
-// добавление аватара
+// добавление аватара на клинт
 function addAvatar(message) {
     let serverNick = message.client.nick;
     let serverName = message.client.name;
+    console.log(serverName);
     let userArray = user.list;
+    console.log(userArray)
 
     userArray.forEach(item => {
         if (serverName == item.name && serverNick == item.nick) {
-            item.photo = message.content.data;
+            item.photo = message.content.data; 
             const avatarUrl = item.photo;
             search(chatWindow, avatarUrl);
         }
     });
-}
 
+    // userArray.forEach(item => {
+    //     if (serverName == item.name && serverNick == item.nick) {
+    //         item.photo = message.content.data;
+    //         const avatarUrl = item.photo;
+    //         search(chatWindow, avatarUrl);
+    //     }
+    // });
+}
 
 // поиск нужного элемента
 function search (where, url) {
@@ -167,7 +195,7 @@ sendButton.addEventListener('click', (e) => {
     sendMessage();
 });
 
-// загрузка аватара в pop up окно
+// загрузка аватара и отправка на сервер
 function loadAvatar(input) {
     changeWindow(chatWindow, photo);
     const file = input.files[0];

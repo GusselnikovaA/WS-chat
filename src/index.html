@@ -47,7 +47,21 @@
 
     <main class="global hide">
         <div class="global-user user">
-            <div class="user-info"></div>
+            <div class="user-info">
+                <label for="user__photo" >
+                    <div class="user__avatar">
+                        <div class="user__avatar_download">
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </div>
+                        <img src="" alt="аватар">
+                    </div>
+                </label>
+                <input type="file" class="user__photo" id="user__photo" name="user__photo">
+                <div class="user__wrap">
+                    <div class="user__name"></div>
+                    <div class="user__nick"></div>
+                </div>
+            </div>
             <div class="user-online__subtitle">Online (<span class="user-online__number"></span>)</div>
             <div class="user-online"></div>
         </div>
@@ -93,8 +107,7 @@
     <script src="js/main.js" type="module"></script>
 
     <!-- html шаблон вывода информации о пользователе -->
-    <script id="userInfoTemplate" type="text/template">
-        {{#each list}}
+    <!-- <script id="userInfoTemplate" type="text/template">
         <label for="user__photo" >
             <div class="user__avatar">
                 <div class="user__avatar_download">
@@ -108,8 +121,7 @@
             <div class="user__name">{{name}}</div>
             <div class="user__nick">{{nick}}</div>
         </div>
-        {{/each}}
-    </script>
+    </script> -->
 
     <!-- html шаблон вывода подключенных пользователей -->
     <script id="userOnlineTemplate" type="text/template">
@@ -143,7 +155,6 @@
         </div>
         {{/each}}
     </script>
-
 
 </body>
 </html>

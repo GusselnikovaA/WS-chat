@@ -837,6 +837,10 @@ label {
   border-radius: 50%;
 }
 
+.photo-wrap img {
+  min-width: 284px;
+}
+
 .photo__subtitle {
   color: #7f91a4;
   font-size: 14px;
