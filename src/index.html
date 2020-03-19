@@ -127,7 +127,7 @@
     <script id="userOnlineTemplate" type="text/template">
         {{#each list}}
         <div class="user-info user_online">
-            <div class="user__avatar user-online__avatar">
+            <div class="user__avatar user-online__avatar {{nick}}">
                 <img src="{{photo}}" alt="аватар">
             </div>
             <div class="user__wrap">
@@ -142,7 +142,7 @@
     <script id="messageTemplate" type="text/template">
         {{#each list}}
         <div class="message-item">
-            <div class="user__avatar message-item__avatar">
+            <div class="user__avatar message-item__avatar {{nick}}">
                 <img src="{{photo}}" alt="аватар">
             </div>
             <div class="message-item__content">

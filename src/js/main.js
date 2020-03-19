@@ -79,6 +79,7 @@ function authorization () {
             changeWindow(auth, chatWindow);
 
             userAvatar.lastElementChild.src = 'img/photo-camera.png';
+            userAvatar.classList.add(authInputNick.value);
             userName.innerHTML = authInputName.value;
             userNick.innerHTML = authInputNick.value;
 
@@ -103,15 +104,6 @@ function authorization () {
     });
 }
 
-// выводит сообщение на экран на экран
-// надо добавить проверку кем отправлено сообщение, пользователем или нет
-function addMessage(message) {
-    const date = new Date();
-    let time = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    messageContainer.innerHTML = View.render('messageTemplate', message);
-    messageContainer.scrollTop = messageContainer.scrollHeight;
-}
-
 // добавление пользователя
 function addUser(message) {
     user.list.push({
@@ -119,63 +111,12 @@ function addUser(message) {
         name: message.content.data.name,
         nick: message.content.data.nick
     });
-
-    console.log(user)
-    // let serverNick = message.client.nick;
-    // let serverName = message.client.name;
-    // let userArray = user.list;
-    // console.log(serverName);
-
-    // userArray.forEach(item => {
-    //     if (serverName == item.name && serverNick == item.nick) {
-    //         userInfo.innerHTML = View.render('userInfoTemplate', item);
-    //     }
-    // });
 }
 
 // добавление пользователей онлайн
 function addOnlineUsers(message) {
     userOnline.innerHTML = View.render('userOnlineTemplate', message.allUsers);
     usersOnline.innerText = message.allUsers.list.length;
-}
-
-// добавление аватара на клинт
-function addAvatar(message) {
-    let serverNick = message.client.nick;
-    let serverName = message.client.name;
-    console.log(serverName);
-    let userArray = user.list;
-    console.log(userArray)
-
-    userArray.forEach(item => {
-        if (serverName == item.name && serverNick == item.nick) {
-            item.photo = message.content.data; 
-            const avatarUrl = item.photo;
-            search(chatWindow, avatarUrl);
-        }
-    });
-
-    // userArray.forEach(item => {
-    //     if (serverName == item.name && serverNick == item.nick) {
-    //         item.photo = message.content.data;
-    //         const avatarUrl = item.photo;
-    //         search(chatWindow, avatarUrl);
-    //     }
-    // });
-}
-
-// поиск нужного элемента
-function search (where, url) {
-    const children = [...where.children];
-    for (const element of children) {
-        if (element.parentNode.classList.contains('user__avatar')) {
-            element.src = url;
-        }
-
-        if (element.children.length > 0) {
-            search(element, url);
-        }
-    }
 }
 
 // отправка сообщения на сервер
@@ -194,6 +135,65 @@ sendButton.addEventListener('click', (e) => {
     e.preventDefault();
     sendMessage();
 });
+
+// выводит сообщение на экран на экран
+// надо добавить проверку кем отправлено сообщение, пользователем или нет
+function addMessage(message) {
+    const date = new Date();
+    let time = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    messageContainer.innerHTML = View.render('messageTemplate', message);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
+// добавление аватара на клинт
+function addAvatar(message) {
+    let serverNick = message.client.nick;
+    let serverName = message.client.name;
+    let userArray = user.list;
+
+    userArray.forEach(item => {
+        if (serverName == item.name && serverNick == item.nick) {
+            item.photo = message.content.data; 
+            const avatarUrl = item.photo;
+            searchAvatarContainer(chatWindow, avatarUrl, serverNick);
+        }
+    });
+}
+
+// поиск нужного элемента
+// function searchUser (where, url, className, array) {
+//     const children = [...where.children];
+//     const elementArray = array;
+//     for (const element of children) {
+//         if (element.classList.contains(className)) {
+//             elementArray.push(element);
+//             search(element, url, user__avatar)
+//             [...element.children].forEach(el => {
+//                 if (el.parentNode.classList.contains('user__avatar')) {
+//                     el.src = url;
+//                 }
+//             });
+//         }
+
+//         if (element.children.length > 0) {
+//             searchUser(element, url, className, elementArray);
+//         }
+//     }
+// }
+
+// поиск нужного элемента для загрузки аватара
+function searchAvatarContainer (where, url, serverNick) {
+    const children = [...where.children];
+    for (const element of children) {
+        if (element.parentNode.classList.contains('user__avatar') && element.parentNode.classList.contains(serverNick)) {
+            element.src = url;
+        }
+
+        if (element.children.length > 0) {
+            searchAvatarContainer(element, url, serverNick);
+        }
+    }
+}
 
 // загрузка аватара и отправка на сервер
 function loadAvatar(input) {
@@ -225,7 +225,6 @@ function loadAvatar(input) {
         changeWindow(photo, chatWindow);
     });
 }
-
 
 // обработчкик загрузки аватара (делегирование) 
 userInfo.addEventListener('change', (e) => {
