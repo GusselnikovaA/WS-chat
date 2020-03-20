@@ -12,17 +12,20 @@ const users = {
         list: []
     }
 };
+const messages = {
+    type: 'history',
+    history: []
+};
 
 // отслеживаем событие connection
 server.on('connection', function connection(ws) {
     // отправка данных обо всех онлайн пользователях
     if (users.allUsers.list.length) {
-        ws.send(JSON.stringify({users}));
+        ws.send(JSON.stringify(users));
     }
     // пришли данные с клиента
     ws.on('message', function incoming(message) {
         let messageBody = JSON.parse(message);
-
         // если поступили данные о новом пользователе
         if(messageBody.type == 'newUser') {
             ws.user = messageBody.data;
@@ -45,6 +48,8 @@ server.on('connection', function connection(ws) {
             });
         // если поступили данные о сообщении
         } else if (messageBody.type == 'message') {
+            messages.push({content: messageBody, client: ws.user});
+            console.log('сообщения', messages);
             server.clients.forEach(function each(client) {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify({content: messageBody, client: ws.user}));
@@ -61,7 +66,7 @@ server.on('connection', function connection(ws) {
             }
         });
         server.clients.forEach(function each(client) {
-            client.send(JSON.stringify({users}));
+            client.send(JSON.stringify(users));
         });
     });
 });

@@ -44,10 +44,12 @@ ws.onopen = function (e) {
 // получение данных с сервера
 ws.onmessage = function (message) {
     let messageBody = JSON.parse(message.data); 
-    console.log(`[message] Данные получены с сервера: ${messageBody}`);
+    console.log(`[message] Данные получены с сервера: ${JSON.stringify(messageBody)}`);
 
     if (messageBody.type == 'allUsers') {
         addOnlineUsers(messageBody);
+    } else if (messageBody.content.type == 'history') {
+        addMessage(messageBody);
     } else if (messageBody.content.type == 'newUser') {
         addUser(messageBody);
     } else if (messageBody.content.type == 'photo') {
@@ -152,7 +154,6 @@ function addMessage(message) {
 
     let newMessageContainer = document.createElement('div');
     newMessageContainer.classList.add('message-item');
-
     newMessageContainer.innerHTML = View.render('messageTemplate', newMessage);
 
     if (newMessage.nick === userAvatar.dataset.nick) {
@@ -162,13 +163,6 @@ function addMessage(message) {
     }
 
     messageContainer.append(newMessageContainer);
-
-    // [...messageContainer.children].forEach (child => {
-    //     if (child.classList.contains(newMessage.nick)) {
-
-    //     }
-    // })
-
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
