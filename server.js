@@ -8,28 +8,42 @@ const server = new WebSocket.Server({
 });
 const users = {
     type: 'allUsers',
-    allUsers: {
-        list: []
-    }
+    allUsers: []
 };
-const messages = {
+const history = {
     type: 'history',
-    history: []
+    messages: []
 };
 
 // отслеживаем событие connection
 server.on('connection', function connection(ws) {
     // отправка данных обо всех онлайн пользователях
-    if (users.allUsers.list.length) {
-        ws.send(JSON.stringify(users));
+    if (users.allUsers.length) {
+        ws.send(JSON.stringify(users)); 
     }
     // пришли данные с клиента
     ws.on('message', function incoming(message) {
         let messageBody = JSON.parse(message);
-        // если поступили данные о новом пользователе
-        if(messageBody.type == 'newUser') {
+
+        // если поступили данные о старом пользователе
+        if(messageBody.type == 'oldUser') {
+            users.allUsers.forEach(user => {
+                if (user.nick == messageBody.data.nick) {
+                    user.online = true;
+                }
+            });
+
+            server.clients.forEach(function each(client) {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify(users));
+                }
+                if (client == ws && client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify(history));
+                }
+            });
+        } else if(messageBody.type == 'newUser') {
             ws.user = messageBody.data;
-            users.allUsers.list.push(ws.user);
+            users.allUsers.push(ws.user);
 
             server.clients.forEach(function each(client) {
                 if (client.readyState === WebSocket.OPEN) {
@@ -48,8 +62,12 @@ server.on('connection', function connection(ws) {
             });
         // если поступили данные о сообщении
         } else if (messageBody.type == 'message') {
-            messages.push({content: messageBody, client: ws.user});
-            console.log('сообщения', messages);
+            const date = new Date();
+            let time = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            messageBody.time = time;
+
+            history.messages.push({content: messageBody, client: ws.user});
+
             server.clients.forEach(function each(client) {
                 if (client.readyState === WebSocket.OPEN) {
                     client.send(JSON.stringify({content: messageBody, client: ws.user}));
@@ -60,11 +78,12 @@ server.on('connection', function connection(ws) {
 
     // закрытие подключения
     ws.on('close', (e) => {
-        users.allUsers.list.forEach(function(user, i) {
+        users.allUsers.forEach(function(user) {
             if (ws.user && user.name == ws.user.name) {
-                users.allUsers.list.splice(i, 1);
+                user.online = false;
             }
         });
+
         server.clients.forEach(function each(client) {
             client.send(JSON.stringify(users));
         });

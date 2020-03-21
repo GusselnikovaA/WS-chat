@@ -82,17 +82,13 @@
 
     <!-- html шаблон вывода подключенных пользователей -->
     <script id="userOnlineTemplate" type="text/template">
-        {{#each list}}
-        <div class="user-info user_online">
-            <div class="user__avatar user-online__avatar" data-nick={{nick}}>
-                <img src="{{photo}}" alt="аватар">
-            </div>
-            <div class="user__wrap">
-                <div class="user__name user-online__name">{{name}}</div>
-                <div class="user__nick">{{nick}}</div>
-            </div>
+        <div class="user__avatar user-online__avatar" data-nick={{nick}}>
+            <img src="{{photo}}" alt="аватар">
         </div>
-        {{/each}}
+        <div class="user__wrap">
+            <div class="user__name user-online__name">{{name}}</div>
+            <div class="user__nick">{{nick}}</div>
+        </div>
     </script>
 
     <!-- html шаблон вывода сообщений -->

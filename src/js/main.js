@@ -14,26 +14,23 @@ const sendButton = document.querySelector('.message__button');
 const messageContainer = document.querySelector('.message-container');
 
 const userInfo = document.querySelector('.user-info');
-
 const userAvatar = document.querySelector('.user__avatar');
 const userName = document.querySelector('.user__name');
 const userNick = document.querySelector('.user__nick');
 
-// const userPhotos = document.querySelectorAll('.user__avatar');
+
 const userOnline = document.querySelector('.user-online');
 const usersOnline = document.querySelector('.user-online__number');
+let usersNumber = 0;
 
 const photo = document.querySelector('.photo');
-// const photoContainer = document.querySelector('.photo-wrap');
 const photoContainer = document.querySelector('#loadingAvatar');
 const photoSave = document.querySelector('#photo__save');
 const photoCancel = document.querySelector('#photo__cancel');
 
 let avatar;
 
-const user = {
-    list: []
-};
+let users = [];
 
 // соединение с сервером. Запуск авторизации
 ws.onopen = function (e) {
@@ -47,14 +44,24 @@ ws.onmessage = function (message) {
     console.log(`[message] Данные получены с сервера: ${JSON.stringify(messageBody)}`);
 
     if (messageBody.type == 'allUsers') {
-        addOnlineUsers(messageBody);
-    } else if (messageBody.content.type == 'history') {
-        addMessage(messageBody);
+        users = messageBody.allUsers;
+        userOnline.innerHTML = '';
+        users.forEach(user => {
+            if(user.online === true) {
+                addOnlineUsers(user);
+            }
+        })
+    } else if (messageBody.type == 'history') {
+        console.log('history', JSON.stringify(messageBody))
+        messageBody.messages.forEach(item => {
+            addMessage(item);
+        })
     } else if (messageBody.content.type == 'newUser') {
         addUser(messageBody);
     } else if (messageBody.content.type == 'photo') {
         addAvatar(messageBody);
     } else if (messageBody.content.type == 'message') {
+        console.log('message', JSON.stringify(messageBody))
         addMessage(messageBody);
     }
 };
@@ -81,19 +88,43 @@ function authorization () {
             changeWindow(auth, chatWindow);
 
             userAvatar.lastElementChild.src = 'img/photo-camera.png';
-            // userAvatar.classList.add(authInputNick.value);
             userAvatar.dataset.nick = authInputNick.value;
             userName.innerHTML = authInputName.value;
             userNick.innerHTML = authInputNick.value;
 
-            ws.send(JSON.stringify({
-                type: 'newUser',
-                data: {
-                    name: authInputName.value,
-                    nick: authInputNick.value,
-                    photo: 'img/photo-camera.png'
-                }
-            }));
+            let IsItOldUser = false;
+            let oldUser;
+            users.forEach(user => {
+                if (user.nick === authInputNick.value) {
+                    IsItOldUser = true;
+                    oldUser = user;
+                    console.log(JSON.stringify(user));
+                } 
+            })    
+                
+            if (IsItOldUser == true) {
+                userAvatar.lastElementChild.src = oldUser.photo;
+
+                ws.send(JSON.stringify({
+                    type: 'oldUser',
+                    data: {
+                        name: oldUser.name,
+                        nick: oldUser.nick,
+                        photo: oldUser.photo,
+                        online: true
+                    }
+                }));
+            } else {
+                ws.send(JSON.stringify({
+                    type: 'newUser',
+                    data: {
+                        name: authInputName.value,
+                        nick: authInputNick.value,
+                        photo: 'img/photo-camera.png',
+                        online: true
+                    }
+                }));
+            }
         } else  if (authInputName.value === '' && authInputNick.value === '') {
             authInputName.classList.add('auth__input_error');
             authInputNick.classList.add('auth__input_error');
@@ -109,7 +140,7 @@ function authorization () {
 
 // добавление пользователя
 function addUser(message) {
-    user.list.push({
+    users.push({
         photo: message.content.data.photo,
         name: message.content.data.name,
         nick: message.content.data.nick
@@ -117,9 +148,17 @@ function addUser(message) {
 }
 
 // добавление пользователей онлайн
-function addOnlineUsers(message) {
-    userOnline.innerHTML = View.render('userOnlineTemplate', message.allUsers);
-    usersOnline.innerText = message.allUsers.list.length;
+function addOnlineUsers(user) {
+    let onlineUserContainer = document.createElement('div');
+    onlineUserContainer.classList.add('user-info');
+    onlineUserContainer.classList.add('user_online');
+    onlineUserContainer.innerHTML = View.render('userOnlineTemplate', user);
+    userOnline.append(onlineUserContainer);
+
+    usersNumber =+ 1;
+    usersOnline.innerText = usersNumber;
+    // userOnline.innerHTML = View.render('userOnlineTemplate', message.allUsers);
+    // usersOnline.innerText = message.allUsers.list.length;
 }
 
 // отправка сообщения на сервер
@@ -141,15 +180,12 @@ sendButton.addEventListener('click', (e) => {
 
 // добавление сообщения на клиенте
 function addMessage(message) {
-    const date = new Date();
-    let time = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-
     let newMessage = {
         name: message.client.name,
         nick: message.client.nick,
         photo: message.client.photo,
         messageText: message.content.data,
-        time: time
+        time: message.content.time
     }
 
     let newMessageContainer = document.createElement('div');
@@ -170,12 +206,11 @@ function addMessage(message) {
 function addAvatar(message) {
     let serverNick = message.client.nick;
     let serverName = message.client.name;
-    let userArray = user.list;
 
-    userArray.forEach(item => {
-        if (serverName == item.name && serverNick == item.nick) {
-            item.photo = message.content.data; 
-            const avatarUrl = item.photo;
+    users.forEach(user => {
+        if (serverName == user.name && serverNick == user.nick) {
+            user.photo = message.content.data; 
+            const avatarUrl = user.photo;
             searchAvatarContainer(chatWindow, avatarUrl, serverNick);
         }
     });
@@ -234,4 +269,3 @@ userInfo.addEventListener('change', (e) => {
         loadAvatar(element);
     }
 });
-
