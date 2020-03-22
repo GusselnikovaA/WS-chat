@@ -27,6 +27,7 @@ server.on('connection', function connection(ws) {
 
         // если поступили данные о старом пользователе
         if(messageBody.type == 'oldUser') {
+            ws.user = messageBody.data;
             users.allUsers.forEach(user => {
                 if (user.nick == messageBody.data.nick) {
                     user.online = true;

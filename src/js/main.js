@@ -21,7 +21,7 @@ const userNick = document.querySelector('.user__nick');
 
 const userOnline = document.querySelector('.user-online');
 const usersOnline = document.querySelector('.user-online__number');
-let usersNumber = 0;
+let usersNumber;
 
 const photo = document.querySelector('.photo');
 const photoContainer = document.querySelector('#loadingAvatar');
@@ -46,13 +46,13 @@ ws.onmessage = function (message) {
     if (messageBody.type == 'allUsers') {
         users = messageBody.allUsers;
         userOnline.innerHTML = '';
+        usersNumber = 0;
         users.forEach(user => {
             if(user.online === true) {
                 addOnlineUsers(user);
             }
         })
     } else if (messageBody.type == 'history') {
-        console.log('history', JSON.stringify(messageBody))
         messageBody.messages.forEach(item => {
             addMessage(item);
         })
@@ -61,7 +61,6 @@ ws.onmessage = function (message) {
     } else if (messageBody.content.type == 'photo') {
         addAvatar(messageBody);
     } else if (messageBody.content.type == 'message') {
-        console.log('message', JSON.stringify(messageBody))
         addMessage(messageBody);
     }
 };
@@ -98,7 +97,6 @@ function authorization () {
                 if (user.nick === authInputNick.value) {
                     IsItOldUser = true;
                     oldUser = user;
-                    console.log(JSON.stringify(user));
                 } 
             })    
                 
@@ -155,10 +153,9 @@ function addOnlineUsers(user) {
     onlineUserContainer.innerHTML = View.render('userOnlineTemplate', user);
     userOnline.append(onlineUserContainer);
 
-    usersNumber =+ 1;
+    usersNumber = usersNumber + 1;
+    console.log('function add', usersNumber);
     usersOnline.innerText = usersNumber;
-    // userOnline.innerHTML = View.render('userOnlineTemplate', message.allUsers);
-    // usersOnline.innerText = message.allUsers.list.length;
 }
 
 // отправка сообщения на сервер
