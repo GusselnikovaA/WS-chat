@@ -64,7 +64,11 @@ server.on('connection', function connection(ws) {
         // если поступили данные о сообщении
         } else if (messageBody.type == 'message') {
             const date = new Date();
-            let time = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            let time = date.toLocaleTimeString("ru", {
+                hour12: false,
+                hour: "numeric",
+                minute: "numeric"
+            });
             messageBody.time = time;
 
             history.messages.push({content: messageBody, client: ws.user});
