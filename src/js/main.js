@@ -1,4 +1,4 @@
-import View from './partials/view.js';
+import View from './view.js';
 
 const ws = new WebSocket("ws://localhost:8080");
 

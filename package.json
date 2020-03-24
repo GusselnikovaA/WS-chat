@@ -1,5 +1,5 @@
 {
-  "name": "Chat",
+  "name": "WS-chat",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GusselnikovaA/Chat.git"
+    "url": "git+https://github.com/GusselnikovaA/WS-chat.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GusselnikovaA/Chat.gitissues"
+    "url": "https://github.com/GusselnikovaA/WS-chat.gitissues"
   },
-  "homepage": "https://github.com/GusselnikovaA/Chat.git#readme",
+  "homepage": "https://github.com/GusselnikovaA/WS-chat.git#readme",
   "dependencies": {
     "gulp": "^4.0.2",
     "handlebars": "^4.7.3",

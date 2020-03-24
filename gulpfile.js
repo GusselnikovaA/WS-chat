@@ -1,4 +1,4 @@
-const { series, src, dest, watch } = require('gulp');
+const { series, src, dest } = require('gulp');
 const cleanCSS = require('gulp-clean-css');
 const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-imagemin');
@@ -13,14 +13,10 @@ function minifyСss() {
 }
 
 function minifyJS() {
-  return src(['./src/js/main.js'])
-        .pipe(babel({
-          presets: ['@babel/env']
-        }))
+  return src(['./src/js/*.js'])
         .pipe(uglify())
         .pipe(dest('dist/js/'));
 }
-
 
 function minifyHtml() {
   return src('./src/*.html')
@@ -34,16 +30,8 @@ function minImages(){
         .pipe(dest('dist/img'));
 }
 
-function watch() {
-  watch('js/*.js', ['minifyJS']);
-  watch('./src/*.html', ['minifyHtml']);
-  watch('./src/css/*.css', ['minifyСss']);
-}
-
-
 exports.build = series(minifyСss, minImages, minifyJS, minifyHtml);
 exports.minifyJS = minifyJS;
 exports.minifyHtml = minifyHtml;
 exports.minifyСss = minifyСss;
 exports.minImages = minImages;
-exports.watch = watch;
